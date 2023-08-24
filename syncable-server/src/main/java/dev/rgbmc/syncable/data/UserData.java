@@ -35,19 +35,19 @@ public class UserData implements Serializable {
         setData(decodedData);
     }
 
-    public void setEncodedData(byte[] data) {
-        this.data = data;
-    }
-
     public byte[] getEncodedData() {
         return data;
     }
 
-    public void setData(String data) {
-        this.data = Base64.getEncoder().encode(data.getBytes(StandardCharsets.UTF_8));
+    public void setEncodedData(byte[] data) {
+        this.data = data;
     }
 
     public String getData() {
         return new String(Base64.getDecoder().decode(this.data), StandardCharsets.UTF_8);
+    }
+
+    public void setData(String data) {
+        this.data = Base64.getEncoder().encode(data.getBytes(StandardCharsets.UTF_8));
     }
 }

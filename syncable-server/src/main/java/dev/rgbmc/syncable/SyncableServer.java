@@ -8,14 +8,18 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class SyncableServer {
+    private static SyncableServer instance;
     private final Logger logger;
     private VoltDB database = null;
-    private static SyncableServer instance;
     private SyncableProtocolServer protocolServer;
     private int port = 55541;
     public SyncableServer() {
         instance = this;
         logger = Logger.getLogger("Syncable-Server");
+    }
+
+    public static SyncableServer getInstance() {
+        return instance;
     }
 
     public void start(String host, String user, String password, boolean ssl, int minimum_idle, int maximum_pool_size, int max_lifetime) throws SQLException {
@@ -55,9 +59,5 @@ public class SyncableServer {
 
     public void setPort(int port) {
         this.port = port;
-    }
-
-    public static SyncableServer getInstance() {
-        return instance;
     }
 }

@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class VoltDB {
+    public static Dao<UserData, UUID> users;
     private static VoltDB instance;
     protected final ConnectionSource connectionSource;
-    public static Dao<UserData, UUID> users;
     public VoltDB(String host, String user, String password, boolean ssl, int minimum_idle, int maximum_pool_size, int max_lifetime) throws SQLException {
         instance = this;
         connectionSource = getConnectionSource(host, user, password, ssl, minimum_idle, maximum_pool_size, max_lifetime);
@@ -29,6 +29,11 @@ public class VoltDB {
             TableUtils.createTable(this.connectionSource, UserData.class);
         }
     }
+
+    public static VoltDB getInstance() {
+        return instance;
+    }
+
     protected ConnectionSource getConnectionSource(String host, String user, String password, boolean ssl, int minimum_idle, int maximum_pool_size, int max_lifetime) throws SQLException {
         HikariConfig config = new HikariConfig();
         config.setPoolName("Syncable-voltdb");
@@ -45,10 +50,6 @@ public class VoltDB {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         HikariDataSource dataSource = new HikariDataSource(config);
         return new HikariConnectionSource(dataSource, url);
-    }
-
-    public static VoltDB getInstance() {
-        return instance;
     }
 
     public List<UserData> queryAll() throws SQLException {
