@@ -1,0 +1,8 @@
+voltdb:
+  host: localhost:21212
+  user: syncable
+  password: SyncablePowered
+  max-lifetime: 1800000
+  minimum-idle: 8
+  maximum-pool-size: 20
+  ssl: false

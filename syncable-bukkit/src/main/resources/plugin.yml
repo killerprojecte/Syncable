@@ -1,0 +1,10 @@
+name: Syncable
+version: '${version}'
+main: dev.rgbmc.syncable.SyncableBukkit
+api-version: 1.13
+load: STARTUP
+author: RGBMCPowered
+authors:
+  - FlyProject
+description: A Next-Generation Minecraft player data synchronization system based on VoltDB
+website: https://rgbmc.wiki/zh/Syncable
