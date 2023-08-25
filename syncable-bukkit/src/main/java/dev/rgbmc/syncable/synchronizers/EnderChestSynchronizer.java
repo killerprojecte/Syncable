@@ -5,25 +5,25 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
 import dev.rgbmc.syncable.utils.ItemSerializer;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.UUID;
-
-public class InventorySynchronizer extends Synchronizer {
+public class EnderChestSynchronizer extends Synchronizer {
   @Override
   public void deserialize(UUID playerId, String data) {
     Player player = Bukkit.getPlayer(playerId);
-    PlayerInventory inventory = player.getInventory();
-    for (int i = 0; i < inventory.getSize(); i++) {
-      inventory.setItem(i, new ItemStack(Material.AIR));
+    Inventory enderChest = player.getEnderChest();
+    for (int i = 0; i < enderChest.getSize(); i++) {
+      enderChest.setItem(i, new ItemStack(Material.AIR));
     }
     JsonObject jsonObject = JsonParser.parseString(data).getAsJsonObject();
     for (String key : jsonObject.keySet()) {
-      inventory.setItem(
+      enderChest.setItem(
               Integer.parseInt(key), ItemSerializer.deserialize(jsonObject.get(key).getAsString()));
     }
   }
@@ -32,9 +32,9 @@ public class InventorySynchronizer extends Synchronizer {
   public String serialize(UUID playerId) {
     Player player = Bukkit.getPlayer(playerId);
     JsonObject jsonObject = new JsonObject();
-    PlayerInventory inventory = player.getInventory();
-    for (int i = 0; i < inventory.getSize(); i++) {
-      jsonObject.addProperty(String.valueOf(i), ItemSerializer.serialize(inventory.getItem(i)));
+    Inventory enderChest = player.getEnderChest();
+    for (int i = 0; i < enderChest.getSize(); i++) {
+      jsonObject.addProperty(String.valueOf(i), ItemSerializer.serialize(enderChest.getItem(i)));
     }
     return new Gson().toJson(jsonObject);
   }

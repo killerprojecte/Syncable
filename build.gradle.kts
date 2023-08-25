@@ -19,7 +19,7 @@ subprojects {
     dependencies {
         val compileOnly by configurations
         val implementation by configurations
-        compileOnly("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT")
+        compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
         implementation("com.google.code.gson:gson:2.10.1")
     }
 }

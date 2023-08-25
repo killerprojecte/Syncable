@@ -5,8 +5,7 @@ import dev.rgbmc.syncable.client.handlers.NewProfileHandler;
 import dev.rgbmc.syncable.client.synchronizers.SynchronizerManager;
 import dev.rgbmc.syncable.listeners.PlayerListener;
 import dev.rgbmc.syncable.server.SyncableServer;
-import dev.rgbmc.syncable.synchronizers.ExperienceSynchronizer;
-import dev.rgbmc.syncable.synchronizers.InventorySynchronizer;
+import dev.rgbmc.syncable.synchronizers.*;
 import dev.rgbmc.syncable.tasks.AutoSaveTimer;
 import dev.rgbmc.syncable.utils.SyncUtils;
 import org.bukkit.Bukkit;
@@ -104,6 +103,27 @@ public class SyncableBukkit extends JavaPlugin {
     }
     if (synchronizers_section.getBoolean("experience")) {
       SynchronizerManager.register("experience", new ExperienceSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("ender-chest")) {
+      SynchronizerManager.register("enderChest", new EnderChestSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("advancement")) {
+      SynchronizerManager.register("advancement", new AdvancementSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("statistic")) {
+      SynchronizerManager.register("statistic", new StatisticSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("effect")) {
+      SynchronizerManager.register("effect", new EffectSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("food")) {
+      SynchronizerManager.register("food", new FoodSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("health")) {
+      SynchronizerManager.register("health", new HealthSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("max-health")) {
+      SynchronizerManager.register("max_health", new MaxHealthSynchronizer());
     }
 
     CompletableFuture.runAsync(

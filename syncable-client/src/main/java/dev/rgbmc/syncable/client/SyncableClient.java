@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 public class SyncableClient {
@@ -54,12 +55,23 @@ public class SyncableClient {
     return instance;
   }
 
-  public void sendCommand(CommandHandler commandHandler) {
-    String command = new Gson().toJson(commandHandler.build());
-    getProtocolClient().send(command);
-    if (commandHandler.interactive()) {
-      interactiveHandlers.put(commandHandler.getMessageId().toString(), commandHandler);
+  public void sendCommand(CommandHandler commandHandler, boolean block) {
+    Runnable runnable = () -> {
+      String command = new Gson().toJson(commandHandler.build());
+      getProtocolClient().send(command);
+      if (commandHandler.interactive()) {
+        interactiveHandlers.put(commandHandler.getMessageId().toString(), commandHandler);
+      }
+    };
+    if (block) {
+      runnable.run();
+    } else {
+      CompletableFuture.runAsync(runnable);
     }
+  }
+
+  public void sendCommand(CommandHandler commandHandler) {
+    sendCommand(commandHandler, false);
   }
 
   public void handleCallback(UUID messageId, JsonObject jsonObject) {

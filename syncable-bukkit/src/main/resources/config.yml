@@ -20,4 +20,11 @@ syncable-server:
 #Data synchronization module configuration
 synchronizers:
   inventory: true
+  ender-chest: true
   experience: true
+  advancement: true
+  statistic: true
+  effect: true
+  food: true
+  health: true
+  max-health: false
