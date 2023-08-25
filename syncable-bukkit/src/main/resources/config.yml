@@ -1,8 +1,23 @@
-voltdb:
-  host: localhost:21212
+#服务器模式
+#Server Mode
+server-mode: true
+#CockroachDB 配置 (仅在服务器模式可用)
+#CockroachDB configuration (Only available in server mode)
+cockroach:
+  host: localhost:26257
+  database: postgres
   user: syncable
   password: SyncablePowered
   max-lifetime: 1800000
   minimum-idle: 8
   maximum-pool-size: 20
   ssl: false
+#Syncable服务端连接参数
+#Syncable-Server connect configuration
+syncable-server:
+  host: "localhost:55541"
+#数据同步模块配置
+#Data synchronization module configuration
+synchronizers:
+  inventory: true
+  experience: true

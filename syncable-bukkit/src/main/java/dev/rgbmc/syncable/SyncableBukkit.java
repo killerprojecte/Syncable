@@ -1,15 +1,141 @@
 package dev.rgbmc.syncable;
 
+import dev.rgbmc.syncable.client.SyncableClient;
+import dev.rgbmc.syncable.client.handlers.NewProfileHandler;
+import dev.rgbmc.syncable.client.synchronizers.SynchronizerManager;
+import dev.rgbmc.syncable.listeners.PlayerListener;
+import dev.rgbmc.syncable.server.SyncableServer;
+import dev.rgbmc.syncable.synchronizers.ExperienceSynchronizer;
+import dev.rgbmc.syncable.synchronizers.InventorySynchronizer;
+import dev.rgbmc.syncable.tasks.AutoSaveTimer;
+import dev.rgbmc.syncable.utils.SyncUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.SQLException;
+import java.util.Timer;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
 public class SyncableBukkit extends JavaPlugin {
+  public static SyncableBukkit instance;
+  private static SyncableServer syncableServer = null;
+  private static SyncableClient syncableClient;
+  private static Timer timer;
+
+  public static SyncableClient getSyncableClient() {
+    return syncableClient;
+  }
+
+  public static SyncableServer getSyncableServer() {
+    return syncableServer;
+  }
+
   @Override
   public void onEnable() {
-    // TODO
+    instance = this;
+    saveDefaultConfig();
+    printLogo(
+        """
+                    \s
+                    ────────────────────────────────────────────────
+                                                                   \s
+                    ╔═╗┬ ┬┌┐┌┌─┐┌─┐┌┐ ┬  ┌─┐╔═╗┌─┐┬ ┬┌─┐┬─┐┌─┐┌┬┐  \s
+                    ╚═╗└┬┘││││  ├─┤├┴┐│  ├┤ ╠═╝│ ││││├┤ ├┬┘├┤  ││  \s
+                    ╚═╝ ┴ ┘└┘└─┘┴ ┴└─┘┴─┘└─┘╩  └─┘└┴┘└─┘┴└─└─┘─┴┘  \s
+                                                                   \s
+                    ────────────────────────────────────────────────
+                """);
+    getLogger().info("Author: FlyProject");
+    getLogger().info("Version: " + getDescription().getVersion());
+    getLogger().info("");
+    getLogger().info("End User License Agreement | 最终用户许可协议 (EULA)");
+    getLogger().info("1、 Prohibit any form of distributing build artifacts of this plugin");
+    getLogger().info("一. 禁止以任何形式传播本插件的构建工件");
+    getLogger().info("2. We will not be responsible for any damages caused by using this plugin");
+    getLogger().info("二、 使用本插件所造成的后果开发团队概不负责");
+    getLogger()
+        .info(
+            "3. We only deal with problems that occur with artifacts obtained from official channels");
+    getLogger()
+        .info(
+            "   If you build and acquire the plugin yourself, we will have the right to refuse any support you request from the development team");
+    getLogger().info("三、 开发团队仅处理(修复)从官方渠道获取的插件所发生的错误(BUG)");
+    getLogger().info("   如果您是通过自行构建等途径获取的工件, 我们将有权拒绝您向开发团队请求的任何支持");
+    getLogger().info("");
+    getLogger()
+        .info(
+            "If you are using this plugin for the first time, please read the End User License Agreement carefully");
+    getLogger().info("如果您是第一次使用本插件, 请仔细阅读最终用户许可协议");
+    getLogger().info("");
+    getLogger()
+        .info(
+            "If you do not agree with the content of the agreement, please uninstall the plug-in, if you continue to use it, you will be deemed to agree to the regulation");
+    getLogger().info("如果您不同意协议中的内容请卸载插件, 如继续使用将视为同意调控");
+
+    if (getConfig().getBoolean("server-mode")) {
+      ConfigurationSection section = getConfig().getConfigurationSection("cockroach");
+      syncableServer = new SyncableServer();
+      try {
+        syncableServer.start(
+            section.getString("host"),
+            section.getString("database"),
+            section.getString("user"),
+            section.getString("password"),
+            section.getBoolean("ssl"),
+            section.getInt("minimum-idle"),
+            section.getInt("maximum-pool-size"),
+            section.getInt("max-lifetime"));
+      } catch (SQLException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    timer = new Timer("Syncable-Timer");
+    timer.schedule(new AutoSaveTimer(), 0L, 1000L);
+    Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+
+    ConfigurationSection synchronizers_section =
+        getConfig().getConfigurationSection("synchronizers");
+    if (synchronizers_section.getBoolean("inventory")) {
+      SynchronizerManager.register("inventory", new InventorySynchronizer());
+    }
+    if (synchronizers_section.getBoolean("experience")) {
+      SynchronizerManager.register("experience", new ExperienceSynchronizer());
+    }
+
+    CompletableFuture.runAsync(
+        () -> {
+          try {
+            Thread.sleep(5000);
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+          getLogger().info("Connecting Syncable Server");
+          syncableClient =
+              new SyncableClient(getDataFolder(), getConfig().getString("syncable-server.host"));
+        });
   }
 
   @Override
   public void onDisable() {
-    // TODO
+    for (Player player : Bukkit.getOnlinePlayers()) {
+      SyncUtils.write(player);
+    }
+    if (syncableServer != null) {
+      getLogger().info("Closing Syncable Server");
+      syncableServer.stop();
+    }
+    getLogger().info("Disconnecting Syncable Client");
+    syncableClient.close();
+  }
+
+  private void printLogo(String text) {
+    String[] spilt = text.split("\n");
+    for (String l : spilt) {
+      getLogger().info(l);
+    }
   }
 }

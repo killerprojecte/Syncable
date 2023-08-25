@@ -1,4 +1,4 @@
-package dev.rgbmc.syncable.handlers;
+package dev.rgbmc.syncable.server.handlers;
 
 import com.google.gson.JsonObject;
 
@@ -18,4 +18,6 @@ public abstract class CommandHandler {
   public abstract String handle() throws Exception;
 
   public abstract boolean callable();
+
+  public abstract UUID getPlayerID();
 }

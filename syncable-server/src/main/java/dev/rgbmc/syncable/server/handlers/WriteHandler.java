@@ -1,8 +1,8 @@
-package dev.rgbmc.syncable.handlers;
+package dev.rgbmc.syncable.server.handlers;
 
 import com.google.gson.JsonObject;
-import dev.rgbmc.syncable.SyncableServer;
-import dev.rgbmc.syncable.data.UserData;
+import dev.rgbmc.syncable.server.SyncableServer;
+import dev.rgbmc.syncable.server.data.UserData;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
@@ -16,11 +16,7 @@ public class WriteHandler extends CommandHandler {
 
   public WriteHandler(JsonObject jsonObject) {
     super(jsonObject);
-    String decoded =
-        new String(
-            Base64.getDecoder().decode(jsonObject.get("player").getAsString()),
-            StandardCharsets.UTF_8);
-    this.playerId = UUID.fromString(decoded);
+    this.playerId = UUID.fromString(jsonObject.get("player").getAsString());
     this.data =
         new String(
             Base64.getDecoder().decode(jsonObject.get("data").getAsString()),
@@ -41,7 +37,8 @@ public class WriteHandler extends CommandHandler {
         });
   }
 
-  public UUID getPlayerId() {
+  @Override
+  public UUID getPlayerID() {
     return playerId;
   }
 

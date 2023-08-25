@@ -1,11 +1,11 @@
-package dev.rgbmc.syncable.websocket;
+package dev.rgbmc.syncable.server.websocket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dev.rgbmc.syncable.SyncableServer;
-import dev.rgbmc.syncable.handlers.CommandHandler;
-import dev.rgbmc.syncable.handlers.CommandHandlers;
+import dev.rgbmc.syncable.server.SyncableServer;
+import dev.rgbmc.syncable.server.handlers.CommandHandlers;
+import dev.rgbmc.syncable.server.handlers.CommandHandler;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -41,6 +41,7 @@ public class SyncableProtocolServer extends WebSocketServer {
     if (handler.callable()) {
       JsonObject callback = new JsonObject();
       callback.addProperty("messageId", handler.getMessageId().toString());
+      callback.addProperty("playerId", handler.getPlayerID().toString());
       try {
         callback.addProperty("data", handler.handle());
       } catch (Exception e) {

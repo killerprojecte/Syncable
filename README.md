@@ -1,6 +1,6 @@
 # Syncable
 
-- A Next-Generation Minecraft player data synchronization system based on VoltDB
+- A Next-Generation Minecraft player data synchronization system based on CockroachDB
 
 ## How to use
 

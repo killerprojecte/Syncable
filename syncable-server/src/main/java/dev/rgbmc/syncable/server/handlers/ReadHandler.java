@@ -1,7 +1,7 @@
-package dev.rgbmc.syncable.handlers;
+package dev.rgbmc.syncable.server.handlers;
 
 import com.google.gson.JsonObject;
-import dev.rgbmc.syncable.SyncableServer;
+import dev.rgbmc.syncable.server.SyncableServer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -19,21 +19,23 @@ public class ReadHandler extends CommandHandler {
     this.playerId = UUID.fromString(decoded);
   }
 
-  public UUID getPlayerId() {
+  @Override
+  public UUID getPlayerID() {
     return playerId;
   }
 
   @Override
   public String handle() throws Exception {
-    if (SyncableServer.getInstance().getDatabase().hasRegistered(getPlayerId())) {
+    if (SyncableServer.getInstance().getDatabase().hasRegistered(getPlayerID())) {
       return Base64.getEncoder()
           .encodeToString(
               SyncableServer.getInstance()
                   .getDatabase()
-                  .getUserData(getPlayerId())
-                  .getEncodedData());
+                  .getUserData(getPlayerID())
+                  .getData()
+                  .getBytes(StandardCharsets.UTF_8));
     } else {
-      return Base64.getEncoder().encodeToString("not_registered".getBytes(StandardCharsets.UTF_8));
+      return "not_registered";
     }
   }
 

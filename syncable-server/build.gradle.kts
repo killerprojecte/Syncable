@@ -14,4 +14,5 @@ dependencies {
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
     implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.java-websocket:Java-WebSocket:1.5.4")
+    implementation("org.postgresql:postgresql:42.6.0")
 }
