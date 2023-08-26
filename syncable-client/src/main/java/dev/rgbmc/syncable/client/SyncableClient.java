@@ -56,13 +56,14 @@ public class SyncableClient {
   }
 
   public void sendCommand(CommandHandler commandHandler, boolean block) {
-    Runnable runnable = () -> {
-      String command = new Gson().toJson(commandHandler.build());
-      getProtocolClient().send(command);
-      if (commandHandler.interactive()) {
-        interactiveHandlers.put(commandHandler.getMessageId().toString(), commandHandler);
-      }
-    };
+    Runnable runnable =
+        () -> {
+          String command = new Gson().toJson(commandHandler.build());
+          getProtocolClient().send(command);
+          if (commandHandler.interactive()) {
+            interactiveHandlers.put(commandHandler.getMessageId().toString(), commandHandler);
+          }
+        };
     if (block) {
       runnable.run();
     } else {
@@ -71,7 +72,7 @@ public class SyncableClient {
   }
 
   public void sendCommand(CommandHandler commandHandler) {
-    sendCommand(commandHandler, false);
+    sendCommand(commandHandler, true);
   }
 
   public void handleCallback(UUID messageId, JsonObject jsonObject) {

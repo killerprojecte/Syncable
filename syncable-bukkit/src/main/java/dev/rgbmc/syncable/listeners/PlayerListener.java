@@ -2,13 +2,12 @@ package dev.rgbmc.syncable.listeners;
 
 import dev.rgbmc.syncable.SyncableBukkit;
 import dev.rgbmc.syncable.client.handlers.ReadHandler;
-import dev.rgbmc.syncable.client.handlers.WriteHandler;
 import dev.rgbmc.syncable.utils.SyncUtils;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -16,9 +15,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 
 public class PlayerListener implements Listener {
-  @EventHandler(priority = EventPriority.MONITOR)
-  public void onPlayerJoin(PlayerLoginEvent event) {
-    if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) return;
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onPlayerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
     SyncableBukkit.getSyncableClient().sendCommand(new ReadHandler(player.getUniqueId()));
   }
@@ -58,6 +56,12 @@ public class PlayerListener implements Listener {
   @EventHandler(priority = EventPriority.MONITOR)
   public void onPlayerDropItem(PlayerDropItemEvent event) {
     Player player = event.getPlayer();
+    SyncUtils.write(player);
+  }
+
+  @EventHandler(priority = EventPriority.MONITOR)
+  public void onPlayerEnchant(EnchantItemEvent event) {
+    Player player = event.getEnchanter();
     SyncUtils.write(player);
   }
 }

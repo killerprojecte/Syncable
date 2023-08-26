@@ -24,7 +24,7 @@ public class InventorySynchronizer extends Synchronizer {
     JsonObject jsonObject = JsonParser.parseString(data).getAsJsonObject();
     for (String key : jsonObject.keySet()) {
       inventory.setItem(
-              Integer.parseInt(key), ItemSerializer.deserialize(jsonObject.get(key).getAsString()));
+          Integer.parseInt(key), ItemSerializer.deserialize(jsonObject.get(key).getAsString()));
     }
   }
 

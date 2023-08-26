@@ -21,6 +21,7 @@ public class WriteHandler extends CommandHandler {
         new String(
             Base64.getDecoder().decode(jsonObject.get("data").getAsString()),
             StandardCharsets.UTF_8);
+    // SyncableServer.getInstance().getLogger().info("Saving player data: " + playerId.toString());
     CompletableFuture.runAsync(
         () -> {
           try {

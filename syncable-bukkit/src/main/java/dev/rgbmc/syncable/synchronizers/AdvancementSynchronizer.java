@@ -11,17 +11,18 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class AdvancementSynchronizer extends Synchronizer {
-    @Override
-    public void deserialize(UUID playerId, String data) {
-        Player player = Bukkit.getPlayer(playerId);
-        AdvancementsData advancementsData = new Gson().fromJson(data, AdvancementsData.class);
-        AdvancementUtils.setAdvancements(player, advancementsData.getAdvancements());
-    }
+  @Override
+  public void deserialize(UUID playerId, String data) {
+    Player player = Bukkit.getPlayer(playerId);
+    AdvancementsData advancementsData = new Gson().fromJson(data, AdvancementsData.class);
+    AdvancementUtils.setAdvancements(player, advancementsData.getAdvancements());
+  }
 
-    @Override
-    public String serialize(UUID playerId) {
-        Player player = Bukkit.getPlayer(playerId);
-        AdvancementsData advancementsData = new AdvancementsData(AdvancementUtils.getAdvancements(player));
-        return new Gson().toJson(advancementsData);
-    }
+  @Override
+  public String serialize(UUID playerId) {
+    Player player = Bukkit.getPlayer(playerId);
+    AdvancementsData advancementsData =
+        new AdvancementsData(AdvancementUtils.getAdvancements(player));
+    return new Gson().toJson(advancementsData);
+  }
 }

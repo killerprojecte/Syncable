@@ -12,6 +12,9 @@ subprojects {
         maven {
             url = uri("https://oss.sonatype.org/content/groups/public/")
         }
+        maven {
+            url = uri("https://repo.papermc.io/repository/maven-public/")
+        }
     }
 
     apply(plugin = "java")
@@ -19,7 +22,7 @@ subprojects {
     dependencies {
         val compileOnly by configurations
         val implementation by configurations
-        compileOnly("org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT")
+        compileOnly("dev.folia:folia-api:1.20.1-R0.1-SNAPSHOT")
         implementation("com.google.code.gson:gson:2.10.1")
     }
 }

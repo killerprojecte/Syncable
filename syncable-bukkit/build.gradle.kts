@@ -17,9 +17,13 @@ repositories {
     maven {
         url = uri("https://repo.codemc.io/repository/maven-public/")
     }
+    maven {
+        url = uri("https://repo.william278.net/releases")
+    }
 }
 
 dependencies {
+    compileOnly("net.william278:husksync:2.2.8")
     implementation("de.tr7zw:item-nbt-api:2.11.3")
     implementation(project(":syncable-server"))
     implementation(project(":syncable-client"))

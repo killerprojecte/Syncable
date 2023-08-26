@@ -4,6 +4,9 @@ import dev.rgbmc.syncable.client.SyncableClient;
 import dev.rgbmc.syncable.client.handlers.NewProfileHandler;
 import dev.rgbmc.syncable.client.synchronizers.SynchronizerManager;
 import dev.rgbmc.syncable.listeners.PlayerListener;
+import dev.rgbmc.syncable.schedulers.BukkitScheduler;
+import dev.rgbmc.syncable.schedulers.FoliaScheduler;
+import dev.rgbmc.syncable.schedulers.SyncableScheduler;
 import dev.rgbmc.syncable.server.SyncableServer;
 import dev.rgbmc.syncable.synchronizers.*;
 import dev.rgbmc.syncable.tasks.AutoSaveTimer;
@@ -22,6 +25,7 @@ public class SyncableBukkit extends JavaPlugin {
   public static SyncableBukkit instance;
   private static SyncableServer syncableServer = null;
   private static SyncableClient syncableClient;
+  private static SyncableScheduler scheduler;
   private static Timer timer;
 
   public static SyncableClient getSyncableClient() {
@@ -30,6 +34,10 @@ public class SyncableBukkit extends JavaPlugin {
 
   public static SyncableServer getSyncableServer() {
     return syncableServer;
+  }
+
+  public static SyncableScheduler getScheduler() {
+    return scheduler;
   }
 
   @Override
@@ -74,6 +82,13 @@ public class SyncableBukkit extends JavaPlugin {
             "If you do not agree with the content of the agreement, please uninstall the plug-in, if you continue to use it, you will be deemed to agree to the regulation");
     getLogger().info("如果您不同意协议中的内容请卸载插件, 如继续使用将视为同意调控");
 
+    try {
+      Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+      scheduler = new FoliaScheduler();
+    } catch (ClassNotFoundException e) {
+      scheduler = new BukkitScheduler();
+    }
+
     if (getConfig().getBoolean("server-mode")) {
       ConfigurationSection section = getConfig().getConfigurationSection("cockroach");
       syncableServer = new SyncableServer();
@@ -93,7 +108,6 @@ public class SyncableBukkit extends JavaPlugin {
     }
 
     timer = new Timer("Syncable-Timer");
-    timer.schedule(new AutoSaveTimer(), 0L, 1000L);
     Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 
     ConfigurationSection synchronizers_section =
@@ -125,17 +139,25 @@ public class SyncableBukkit extends JavaPlugin {
     if (synchronizers_section.getBoolean("max-health")) {
       SynchronizerManager.register("max_health", new MaxHealthSynchronizer());
     }
+    if (synchronizers_section.getBoolean("persistent-data-container")) {
+      SynchronizerManager.register(
+          "persistent_data_container", new PersistentDataContainerSynchronizer());
+    }
 
     CompletableFuture.runAsync(
         () -> {
-          try {
-            Thread.sleep(5000);
-          } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+          // Waiting when running on server mode
+          if (syncableServer == null) {
+            try {
+              Thread.sleep(3000);
+            } catch (InterruptedException e) {
+              throw new RuntimeException(e);
+            }
           }
           getLogger().info("Connecting Syncable Server");
           syncableClient =
               new SyncableClient(getDataFolder(), getConfig().getString("syncable-server.host"));
+          timer.schedule(new AutoSaveTimer(), 0L, 1000L);
         });
   }
 
@@ -144,12 +166,12 @@ public class SyncableBukkit extends JavaPlugin {
     for (Player player : Bukkit.getOnlinePlayers()) {
       SyncUtils.write(player);
     }
+    getLogger().info("Disconnecting Syncable Client");
+    syncableClient.close();
     if (syncableServer != null) {
       getLogger().info("Closing Syncable Server");
       syncableServer.stop();
     }
-    getLogger().info("Disconnecting Syncable Client");
-    syncableClient.close();
   }
 
   private void printLogo(String text) {

@@ -6,5 +6,7 @@ load: STARTUP
 author: RGBMCPowered
 authors:
   - FlyProject
+softdepend:
+  - HuskSync
 description: A Next-Generation Minecraft player data synchronization system based on CockroachDB
 website: https://rgbmc.wiki/zh/Syncable
