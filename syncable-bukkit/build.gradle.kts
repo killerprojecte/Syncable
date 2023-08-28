@@ -1,8 +1,5 @@
 @file:Suppress("VulnerableLibrariesLocal")
 
-import org.gradle.internal.impldep.org.yaml.snakeyaml.DumperOptions
-import org.gradle.internal.impldep.org.yaml.snakeyaml.Yaml
-
 
 plugins {
     id("java")
@@ -40,7 +37,7 @@ java {
 }
 
 tasks.compileJava {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible) {
         options.release = targetJavaVersion
     }
     options.encoding = "UTF-8"

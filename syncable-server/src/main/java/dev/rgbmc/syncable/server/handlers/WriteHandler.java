@@ -3,7 +3,6 @@ package dev.rgbmc.syncable.server.handlers;
 import com.google.gson.JsonObject;
 import dev.rgbmc.syncable.server.SyncableServer;
 import dev.rgbmc.syncable.server.data.UserData;
-
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.Base64;

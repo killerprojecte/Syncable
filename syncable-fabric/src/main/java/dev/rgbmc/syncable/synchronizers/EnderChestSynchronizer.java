@@ -6,12 +6,11 @@ import com.google.gson.JsonParser;
 import dev.rgbmc.syncable.SyncableFabric;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
 import dev.rgbmc.syncable.utils.ItemSerializer;
+import java.util.UUID;
 import net.minecraft.inventory.EnderChestInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-
-import java.util.UUID;
 
 public class EnderChestSynchronizer extends Synchronizer {
   @Override

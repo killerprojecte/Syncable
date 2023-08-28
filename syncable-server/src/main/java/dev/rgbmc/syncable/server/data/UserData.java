@@ -3,7 +3,6 @@ package dev.rgbmc.syncable.server.data;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

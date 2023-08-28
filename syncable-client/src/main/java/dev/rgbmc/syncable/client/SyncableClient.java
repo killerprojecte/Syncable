@@ -4,11 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dev.rgbmc.syncable.client.handlers.CommandHandler;
 import dev.rgbmc.syncable.client.websocket.SyncableProtocolClient;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;

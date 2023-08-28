@@ -2,11 +2,10 @@ package dev.rgbmc.syncable.synchronizers;
 
 import dev.rgbmc.syncable.SyncableFabric;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
+import java.util.UUID;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-
-import java.util.UUID;
 
 public class MaxHealthSynchronizer extends Synchronizer {
   @Override

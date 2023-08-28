@@ -6,12 +6,11 @@ import com.google.gson.JsonParser;
 import dev.rgbmc.syncable.SyncableBukkit;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
 import dev.rgbmc.syncable.objects.PotionData;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.UUID;
 
 public class EffectSynchronizer extends Synchronizer {
   @Override

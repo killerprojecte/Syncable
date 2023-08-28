@@ -5,13 +5,11 @@ import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
 import dev.rgbmc.syncable.objects.SyncablePersistentData;
 import dev.rgbmc.syncable.objects.SyncablePersistentDataContainer;
 import dev.rgbmc.syncable.objects.SyncablePersistentDataType;
+import java.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
-
-import java.util.*;
 
 public class PersistentDataContainerSynchronizer extends Synchronizer {
   @Override

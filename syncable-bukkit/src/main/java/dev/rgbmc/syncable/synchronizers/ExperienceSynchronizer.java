@@ -2,10 +2,9 @@ package dev.rgbmc.syncable.synchronizers;
 
 import dev.rgbmc.syncable.SyncableBukkit;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class ExperienceSynchronizer extends Synchronizer {
   @Override
@@ -14,7 +13,8 @@ public class ExperienceSynchronizer extends Synchronizer {
     SyncableBukkit.getScheduler()
         .runTask(
             () -> {
-              player.setTotalExperience(Integer.parseInt(data));
+              player.setLevel(0);
+              player.setExp(Integer.parseInt(data));
             });
   }
 

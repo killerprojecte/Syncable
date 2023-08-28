@@ -3,7 +3,6 @@ package dev.rgbmc.syncable.client.migrators;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dev.rgbmc.syncable.client.handlers.WriteHandler;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;

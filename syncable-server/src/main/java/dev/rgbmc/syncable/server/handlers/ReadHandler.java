@@ -2,7 +2,6 @@ package dev.rgbmc.syncable.server.handlers;
 
 import com.google.gson.JsonObject;
 import dev.rgbmc.syncable.server.SyncableServer;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;

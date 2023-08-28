@@ -3,15 +3,13 @@ package dev.rgbmc.syncable.synchronizers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import dev.rgbmc.syncable.SyncableBukkit;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class StatisticSynchronizer extends Synchronizer {
   @Override
@@ -23,7 +21,7 @@ public class StatisticSynchronizer extends Synchronizer {
       Statistic statistic = Statistic.valueOf(param[0].toUpperCase());
       switch (statistic.getType()) {
         case ENTITY -> player.setStatistic(
-            statistic, EntityType.valueOf(param[1]), jsonObject.get(str).getAsInt());
+            statistic, EntityType.fromName(param[1].toLowerCase()), jsonObject.get(str).getAsInt());
         case BLOCK, ITEM -> player.setStatistic(
             statistic, Material.valueOf(param[1]), jsonObject.get(str).getAsInt());
         default -> player.setStatistic(statistic, jsonObject.get(str).getAsInt());
@@ -41,7 +39,7 @@ public class StatisticSynchronizer extends Synchronizer {
           for (EntityType entityType : EntityType.values()) {
             if (entityType.equals(EntityType.UNKNOWN)) continue;
             jsonObject.addProperty(
-                statistic.name() + ":" + entityType.name(),
+                statistic.name() + ":" + entityType.getName().toUpperCase(),
                 player.getStatistic(statistic, entityType));
           }
         }

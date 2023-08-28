@@ -7,20 +7,6 @@ import dev.rgbmc.syncable.synchronizers.*;
 import dev.rgbmc.syncable.tasks.AutoSaveTimer;
 import dev.rgbmc.syncable.utils.ServerIDUtils;
 import dev.rgbmc.syncable.utils.SyncUtils;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import org.fastmcmirror.yaml.configuration.ConfigurationSection;
-import org.fastmcmirror.yaml.file.FileConfiguration;
-import org.fastmcmirror.yaml.file.YamlConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,6 +15,17 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Optional;
 import java.util.Timer;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
+import net.minecraft.server.MinecraftServer;
+import org.fastmcmirror.yaml.configuration.ConfigurationSection;
+import org.fastmcmirror.yaml.file.FileConfiguration;
+import org.fastmcmirror.yaml.file.YamlConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SyncableFabric implements ModInitializer {
   private static final Logger logger = LoggerFactory.getLogger("Syncable");
@@ -138,6 +135,12 @@ public class SyncableFabric implements ModInitializer {
     }
     if (synchronizers_section.getBoolean("ender-chest")) {
       SynchronizerManager.register("enderChest", new EnderChestSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("advancement")) {
+      SynchronizerManager.register("advancement", new AdvancementSynchronizer());
+    }
+    if (synchronizers_section.getBoolean("statistic")) {
+      SynchronizerManager.register("statistic", new StatisticSynchronizer());
     }
     if (synchronizers_section.getBoolean("effect")) {
       SynchronizerManager.register("effect", new EffectSynchronizer());

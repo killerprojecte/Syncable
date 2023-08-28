@@ -6,15 +6,13 @@ import com.google.gson.JsonParser;
 import dev.rgbmc.syncable.SyncableFabric;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
 import dev.rgbmc.syncable.objects.PotionData;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-
-import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.UUID;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.registry.Registries;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class EffectSynchronizer extends Synchronizer {
   @Override
@@ -31,13 +29,10 @@ public class EffectSynchronizer extends Synchronizer {
     }
     for (String key : jsonObject.keySet()) {
       StatusEffect statusEffect = null;
-      for (Field field : StatusEffects.class.getDeclaredFields()) {
-        if (field.getName().equalsIgnoreCase(key)) {
-          try {
-            statusEffect = (StatusEffect) field.get(null);
-          } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-          }
+      for (StatusEffect effect : Registries.STATUS_EFFECT) {
+        if (Registries.STATUS_EFFECT.getId(effect).getPath().toUpperCase().equalsIgnoreCase(key)) {
+          statusEffect = effect;
+          break;
         }
       }
       if (statusEffect == null) continue;
@@ -64,16 +59,8 @@ public class EffectSynchronizer extends Synchronizer {
     JsonObject jsonObject = new JsonObject();
     for (Map.Entry<StatusEffect, StatusEffectInstance> effectEntry :
         player.getActiveStatusEffects().entrySet()) {
-      String fieldName = null;
-      for (Field field : StatusEffects.class.getDeclaredFields()) {
-        try {
-          if (field.get(null).equals(effectEntry.getKey())) {
-            fieldName = field.getName();
-          }
-        } catch (IllegalAccessException e) {
-          throw new RuntimeException(e);
-        }
-      }
+      String fieldName =
+          Registries.STATUS_EFFECT.getId(effectEntry.getKey()).getPath().toUpperCase();
       PotionData potionData = new PotionData(effectEntry.getValue());
       jsonObject.add(fieldName, new Gson().toJsonTree(potionData));
     }

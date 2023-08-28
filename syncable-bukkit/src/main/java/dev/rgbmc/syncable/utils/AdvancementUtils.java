@@ -1,15 +1,13 @@
 package dev.rgbmc.syncable.utils;
 
-import com.google.gson.JsonObject;
 import dev.rgbmc.syncable.SyncableBukkit;
 import dev.rgbmc.syncable.objects.AdvancementData;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.bukkit.Bukkit;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AdvancementUtils {
   public static List<AdvancementData> getAdvancements(Player player) {

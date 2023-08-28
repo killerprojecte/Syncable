@@ -6,17 +6,14 @@ import dev.rgbmc.syncable.SyncableBukkit;
 import dev.rgbmc.syncable.client.migrators.MigrateWriteHandler;
 import dev.rgbmc.syncable.client.migrators.Migrator;
 import dev.rgbmc.syncable.utils.ItemSerializer;
+import java.util.Optional;
 import net.william278.husksync.api.HuskSyncAPI;
 import net.william278.husksync.data.BukkitInventoryMap;
-import net.william278.husksync.data.UserData;
-import net.william278.husksync.data.UserDataBuilder;
 import net.william278.husksync.player.User;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Optional;
 
 public class HuskSyncMigrator extends Migrator {
   @Override

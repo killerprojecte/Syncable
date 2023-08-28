@@ -3,14 +3,13 @@ package dev.rgbmc.syncable.client.websocket;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.rgbmc.syncable.client.SyncableClient;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
 public class SyncableProtocolClient extends WebSocketClient {
   public SyncableProtocolClient(String host, UUID serverId) throws URISyntaxException {

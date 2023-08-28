@@ -2,10 +2,9 @@ package dev.rgbmc.syncable.utils;
 
 import de.tr7zw.changeme.nbtapi.NBTContainer;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import org.bukkit.inventory.ItemStack;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import org.bukkit.inventory.ItemStack;
 
 public class ItemSerializer {
   public static String serialize(ItemStack item) {

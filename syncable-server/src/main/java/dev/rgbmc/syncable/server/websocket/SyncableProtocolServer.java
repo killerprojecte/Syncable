@@ -4,15 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dev.rgbmc.syncable.server.SyncableServer;
-import dev.rgbmc.syncable.server.handlers.CommandHandlers;
 import dev.rgbmc.syncable.server.handlers.CommandHandler;
-import org.java_websocket.WebSocket;
-import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.server.WebSocketServer;
-
+import dev.rgbmc.syncable.server.handlers.CommandHandlers;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
 
 public class SyncableProtocolServer extends WebSocketServer {
   public SyncableProtocolServer(InetSocketAddress bindAddress) {

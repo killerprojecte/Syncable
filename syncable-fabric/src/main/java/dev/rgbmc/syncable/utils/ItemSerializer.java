@@ -1,13 +1,11 @@
 package dev.rgbmc.syncable.utils;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.nbt.visitor.StringNbtWriter;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 public class ItemSerializer {
   public static String serialize(ItemStack item) {

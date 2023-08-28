@@ -2,7 +2,6 @@ package dev.rgbmc.syncable.server;
 
 import dev.rgbmc.syncable.server.database.CockroachDB;
 import dev.rgbmc.syncable.server.websocket.SyncableProtocolServer;
-
 import java.net.InetSocketAddress;
 import java.sql.SQLException;
 import java.util.logging.Logger;

@@ -1,7 +1,6 @@
 package dev.rgbmc.syncable;
 
 import dev.rgbmc.syncable.client.SyncableClient;
-import dev.rgbmc.syncable.client.handlers.NewProfileHandler;
 import dev.rgbmc.syncable.client.synchronizers.SynchronizerManager;
 import dev.rgbmc.syncable.listeners.PlayerListener;
 import dev.rgbmc.syncable.schedulers.BukkitScheduler;
@@ -12,15 +11,13 @@ import dev.rgbmc.syncable.synchronizers.*;
 import dev.rgbmc.syncable.tasks.AutoSaveTimer;
 import dev.rgbmc.syncable.utils.ServerIDUtils;
 import dev.rgbmc.syncable.utils.SyncUtils;
+import java.sql.SQLException;
+import java.util.Timer;
+import java.util.concurrent.CompletableFuture;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.sql.SQLException;
-import java.util.Timer;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class SyncableBukkit extends JavaPlugin {
   public static SyncableBukkit instance;

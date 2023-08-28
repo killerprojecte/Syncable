@@ -4,11 +4,9 @@ import com.google.gson.Gson;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
 import dev.rgbmc.syncable.objects.AdvancementsData;
 import dev.rgbmc.syncable.utils.AdvancementUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.advancement.Advancement;
-import org.bukkit.entity.Player;
-
 import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class AdvancementSynchronizer extends Synchronizer {
   @Override

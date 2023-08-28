@@ -1,9 +1,7 @@
 package dev.rgbmc.syncable.objects;
 
 import com.google.gson.annotations.SerializedName;
-
 import java.util.Map;
-import java.util.Optional;
 
 public class SyncablePersistentDataContainer {
   @SerializedName("persistent_datas")

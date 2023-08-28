@@ -14,4 +14,3 @@ synchronizers:
   food: true
   health: true
   max-health: false
-  persistent-data-container: false

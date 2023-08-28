@@ -1,7 +1,6 @@
 package dev.rgbmc.syncable.server.handlers;
 
 import com.google.gson.JsonObject;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;

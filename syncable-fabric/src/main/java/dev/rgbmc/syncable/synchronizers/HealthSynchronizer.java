@@ -2,10 +2,9 @@ package dev.rgbmc.syncable.synchronizers;
 
 import dev.rgbmc.syncable.SyncableFabric;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
+import java.util.UUID;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-
-import java.util.UUID;
 
 public class HealthSynchronizer extends Synchronizer {
   @Override

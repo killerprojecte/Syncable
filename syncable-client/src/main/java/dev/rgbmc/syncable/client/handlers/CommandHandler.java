@@ -1,7 +1,6 @@
 package dev.rgbmc.syncable.client.handlers;
 
 import com.google.gson.JsonObject;
-
 import java.util.UUID;
 
 public abstract class CommandHandler {

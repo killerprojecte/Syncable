@@ -1,7 +1,6 @@
 package dev.rgbmc.syncable.client.handlers;
 
 import dev.rgbmc.syncable.client.SyncableClient;
-
 import java.util.UUID;
 
 public class NewProfileHandler {
