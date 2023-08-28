@@ -21,6 +21,7 @@ public class SynchronizerManager {
 
   public static void deserialize(UUID playerId, JsonObject jsonObject) {
     for (String key : jsonObject.keySet()) {
+      if (!synchronizers.containsKey(key)) continue;
       synchronizers
           .get(key)
           .deserialize(

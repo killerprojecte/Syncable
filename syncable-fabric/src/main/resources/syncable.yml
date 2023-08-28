@@ -1,0 +1,17 @@
+#Syncable服务端连接参数
+#Syncable-Server connect configuration
+syncable-server:
+  host: "localhost:55541"
+#数据同步模块配置
+#Data synchronization module configuration
+synchronizers:
+  inventory: true
+  ender-chest: true
+  experience: true
+  advancement: true
+  statistic: true
+  effect: true
+  food: true
+  health: true
+  max-health: false
+  persistent-data-container: false

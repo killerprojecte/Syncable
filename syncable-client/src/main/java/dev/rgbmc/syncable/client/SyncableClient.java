@@ -25,24 +25,11 @@ public class SyncableClient {
   private SyncableProtocolClient protocolClient;
   private boolean close = false;
 
-  public SyncableClient(File workspace, String host) {
+  public SyncableClient(UUID serverId, String host) {
     instance = this;
     logger = Logger.getLogger("Syncable-Client");
     this.host = host;
-    File serverConfigFile = new File(workspace, "server.yml");
-    if (serverConfigFile.exists()) {
-      FileConfiguration configuration = YamlConfiguration.loadConfiguration(serverConfigFile);
-      serverId = UUID.fromString(configuration.getString("server-id"));
-    } else {
-      serverId = UUID.randomUUID();
-      YamlConfiguration configuration = new YamlConfiguration();
-      configuration.set("server-id", serverId.toString());
-      try {
-        configuration.save(serverConfigFile);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    }
+    this.serverId = serverId;
     try {
       protocolClient = new SyncableProtocolClient(host, getServerId());
       protocolClient.connectBlocking();

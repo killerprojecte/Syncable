@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "syncable",
+  "version": "${version}",
+  "name": "SyncableFabric",
+  "description": "",
+  "authors": [
+    "RGBMCPowered",
+    "FlyProject"
+  ],
+  "contact": {
+    "homepage": "https://rgbmc.wiki/zh/Syncable",
+    "sources": "https://github.com/killerprojecte/Syncable"
+  },
+  "license": "GPLv3",
+  "icon": "assets/syncable/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.rgbmc.syncable.SyncableFabric"
+    ]
+  },
+  "mixins": [
+    "syncable.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "~1.20"
+  }
+}

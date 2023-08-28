@@ -10,6 +10,7 @@ import dev.rgbmc.syncable.schedulers.SyncableScheduler;
 import dev.rgbmc.syncable.server.SyncableServer;
 import dev.rgbmc.syncable.synchronizers.*;
 import dev.rgbmc.syncable.tasks.AutoSaveTimer;
+import dev.rgbmc.syncable.utils.ServerIDUtils;
 import dev.rgbmc.syncable.utils.SyncUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -55,6 +56,7 @@ public class SyncableBukkit extends JavaPlugin {
                                                                    \s
                     ────────────────────────────────────────────────
                 """);
+    getLogger().info("Platform: Bukkit");
     getLogger().info("Author: FlyProject");
     getLogger().info("Version: " + getDescription().getVersion());
     getLogger().info("");
@@ -79,7 +81,7 @@ public class SyncableBukkit extends JavaPlugin {
     getLogger().info("");
     getLogger()
         .info(
-            "If you do not agree with the content of the agreement, please uninstall the plug-in, if you continue to use it, you will be deemed to agree to the regulation");
+            "If you do not agree with the content of the agreement, please uninstall the plugin, if you continue to use it, you will be deemed to agree to the regulation");
     getLogger().info("如果您不同意协议中的内容请卸载插件, 如继续使用将视为同意调控");
 
     try {
@@ -156,7 +158,8 @@ public class SyncableBukkit extends JavaPlugin {
           }
           getLogger().info("Connecting Syncable Server");
           syncableClient =
-              new SyncableClient(getDataFolder(), getConfig().getString("syncable-server.host"));
+              new SyncableClient(
+                  ServerIDUtils.read(), getConfig().getString("syncable-server.host"));
           timer.schedule(new AutoSaveTimer(), 0L, 1000L);
         });
   }

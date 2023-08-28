@@ -10,5 +10,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.java-websocket:Java-WebSocket:1.5.4")
+    implementation("org.java-websocket:Java-WebSocket:1.5.4")
 }
