@@ -20,6 +20,9 @@ repositories {
 }
 
 dependencies {
+    compileOnly("folia:folia-api:1.20.1")
+    compileOnly("net.md-5:bungeecord-chat:1.16-R0.4-deprecated+build.9")
+    compileOnly("net.kyori:adventure-api:4.14.0")
     compileOnly("net.william278:husksync:2.2.8")
     implementation("de.tr7zw:item-nbt-api:2.11.3")
     implementation(project(":syncable-server"))
@@ -37,9 +40,7 @@ java {
 }
 
 tasks.compileJava {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible) {
-        options.release = targetJavaVersion
-    }
+    options.release = 8
     options.encoding = "UTF-8"
 }
 
@@ -61,3 +62,5 @@ tasks.shadowJar {
     relocate("com.zaxxer.hikari", "dev.rgbmc.syncable.libs.hikari")
     relocate("de.tr7zw.changeme.nbtapi", "dev.rgbmc.syncable.libs.nbtapi")
 }
+
+tasks.getByName("build").finalizedBy(tasks.shadowJar)

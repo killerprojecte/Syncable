@@ -4,23 +4,24 @@ import com.google.gson.Gson;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
 import dev.rgbmc.syncable.objects.AdvancementsData;
 import dev.rgbmc.syncable.utils.AdvancementUtils;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class AdvancementSynchronizer extends Synchronizer {
-  @Override
-  public void deserialize(UUID playerId, String data) {
-    Player player = Bukkit.getPlayer(playerId);
-    AdvancementsData advancementsData = new Gson().fromJson(data, AdvancementsData.class);
-    AdvancementUtils.setAdvancements(player, advancementsData.getAdvancements());
-  }
+import java.util.UUID;
 
-  @Override
-  public String serialize(UUID playerId) {
-    Player player = Bukkit.getPlayer(playerId);
-    AdvancementsData advancementsData =
-        new AdvancementsData(AdvancementUtils.getAdvancements(player));
-    return new Gson().toJson(advancementsData);
-  }
+public class AdvancementSynchronizer extends Synchronizer {
+    @Override
+    public void deserialize(UUID playerId, String data) {
+        Player player = Bukkit.getPlayer(playerId);
+        AdvancementsData advancementsData = new Gson().fromJson(data, AdvancementsData.class);
+        AdvancementUtils.setAdvancements(player, advancementsData.getAdvancements());
+    }
+
+    @Override
+    public String serialize(UUID playerId) {
+        Player player = Bukkit.getPlayer(playerId);
+        AdvancementsData advancementsData =
+                new AdvancementsData(AdvancementUtils.getAdvancements(player));
+        return new Gson().toJson(advancementsData);
+    }
 }

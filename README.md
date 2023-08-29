@@ -14,3 +14,27 @@ Supported Platforms
 
 - Bukkit
 - Fabric (In Development)
+
+## Build
+
+We don't make prebuilt artifacts publicly available
+
+If you need Syncable for free, build it yourself
+
+For **UN*X** operating system user
+
+```
+./gradlew build
+```
+
+For **Windows** operating system user
+
+```
+gradlew.bat build
+```
+
+For **Windows Powershell** operating system user
+
+```
+./gradlew.bat build
+```

@@ -5,7 +5,7 @@ import dev.rgbmc.syncable.client.handlers.WriteHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class SyncUtils {
-  public static void write(ServerPlayerEntity player) {
-    SyncableFabric.getSyncableClient().sendCommand(new WriteHandler(player.getUuid()));
-  }
+    public static void write(ServerPlayerEntity player) {
+        SyncableFabric.getSyncableClient().sendCommand(new WriteHandler(player.getUuid()));
+    }
 }

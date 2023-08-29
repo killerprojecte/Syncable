@@ -2,6 +2,7 @@ name: Syncable
 version: '${version}'
 main: dev.rgbmc.syncable.SyncableBukkit
 api-version: 1.13
+folia-supported: true
 load: STARTUP
 author: RGBMCPowered
 authors:
@@ -10,3 +11,13 @@ softdepend:
   - HuskSync
 description: A Next-Generation Minecraft player data synchronization system based on CockroachDB
 website: https://rgbmc.wiki/zh/Syncable
+commands:
+  syncable:
+    permission: syncable.admin
+    aliases:
+      - sync
+      - playersync
+      - datasync
+permissions:
+  syncable.admin:
+    default: op

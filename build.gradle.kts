@@ -15,14 +15,15 @@ subprojects {
         maven {
             url = uri("https://repo.papermc.io/repository/maven-public/")
         }
+        maven {
+            url = uri("https://repo.fastmcmirror.org/content/repositories/releases/")
+        }
     }
 
     apply(plugin = "java")
 
     dependencies {
-        val compileOnly by configurations
         val implementation by configurations
-        compileOnly("dev.folia:folia-api:1.20.1-R0.1-SNAPSHOT")
         implementation("com.google.code.gson:gson:2.10.1")
     }
 }

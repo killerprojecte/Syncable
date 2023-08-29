@@ -8,9 +8,6 @@ version = "1.0.0"
 
 repositories {
     mavenCentral()
-    maven {
-        url = uri("https://repo.fastmcmirror.org/content/repositories/releases/")
-    }
 }
 
 dependencies {
@@ -39,6 +36,7 @@ tasks {
     }
 
     compileJava {
+        options.encoding = "UTF-8"
         options.release = 17
     }
 

@@ -1,27 +1,37 @@
 package dev.rgbmc.syncable.synchronizers;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dev.rgbmc.syncable.SyncableFabric;
 import dev.rgbmc.syncable.client.synchronizers.Synchronizer;
-import java.util.UUID;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class ExperienceSynchronizer extends Synchronizer {
-  @Override
-  public void deserialize(UUID playerId, String data) {
-    MinecraftServer server = SyncableFabric.getServer();
-    ServerPlayerEntity player = server.getPlayerManager().getPlayer(playerId);
-    server.executeSync(
-        () -> {
-          player.setExperienceLevel(0);
-          player.setExperiencePoints(Integer.parseInt(data));
-        });
-  }
+import java.util.UUID;
 
-  @Override
-  public String serialize(UUID playerId) {
-    MinecraftServer server = SyncableFabric.getServer();
-    ServerPlayerEntity player = server.getPlayerManager().getPlayer(playerId);
-    return String.valueOf(player.totalExperience);
-  }
+public class ExperienceSynchronizer extends Synchronizer {
+    @Override
+    public void deserialize(UUID playerId, String data) {
+        MinecraftServer server = SyncableFabric.getServer();
+        ServerPlayerEntity player = server.getPlayerManager().getPlayer(playerId);
+        JsonObject jsonObject = JsonParser.parseString(data).getAsJsonObject();
+        server.executeSync(
+                () -> {
+                    player.totalExperience = jsonObject.get("total").getAsInt();
+                    player.experienceProgress = jsonObject.get("exp").getAsFloat();
+                    player.setExperienceLevel(jsonObject.get("level").getAsInt());
+                });
+    }
+
+    @Override
+    public String serialize(UUID playerId) {
+        MinecraftServer server = SyncableFabric.getServer();
+        ServerPlayerEntity player = server.getPlayerManager().getPlayer(playerId);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("total", player.totalExperience);
+        jsonObject.addProperty("level", player.experienceLevel);
+        jsonObject.addProperty("exp", player.experienceProgress);
+        return new Gson().toJson(jsonObject);
+    }
 }
