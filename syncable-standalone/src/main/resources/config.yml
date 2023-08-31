@@ -3,7 +3,7 @@
 cockroach:
   host: localhost:26257
   database: postgres
-  user: syncable
+  user: root
   password: SyncablePowered
   max-lifetime: 1800000
   minimum-idle: 8

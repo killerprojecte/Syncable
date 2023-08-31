@@ -55,7 +55,7 @@ public class SyncableClient {
     }
 
     public void sendCommand(CommandHandler commandHandler) {
-        sendCommand(commandHandler, true);
+        sendCommand(commandHandler, false);
     }
 
     public void handleCallback(UUID messageId, JsonObject jsonObject) {

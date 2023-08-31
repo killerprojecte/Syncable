@@ -12,6 +12,7 @@ public class CommandHandlers {
     static {
         handlers.put(0, ReadHandler.class);
         handlers.put(1, WriteHandler.class);
+        handlers.put(2, RemoveHandler.class);
     }
 
     public static CommandHandler getHandler(int commandId, JsonObject jsonObject) {
