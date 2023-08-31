@@ -14,6 +14,9 @@ Supported Platforms
 
 - Bukkit
 - Fabric (In Development)
+- NeoForge/Forge (In Development)
+- Velocity (In Development, Server only)
+- Standalone (Server only)
 
 ## Build
 

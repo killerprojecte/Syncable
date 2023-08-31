@@ -60,12 +60,12 @@ public class CockroachDB {
         config.setPoolName("Syncable-CockroachDB");
         String url =
                 "jdbc:postgresql://"
-                + host
-                + "/"
-                + database
-                + "?useSSL="
-                + ssl
-                + "&serverTimezone=UTC&autoReconnect=true&allowPublicKeyRetrieval=true&characterEncoding=utf8";
+                        + host
+                        + "/"
+                        + database
+                        + "?useSSL="
+                        + ssl
+                        + "&serverTimezone=UTC&autoReconnect=true&allowPublicKeyRetrieval=true&characterEncoding=utf8";
         config.setJdbcUrl(url);
         config.setUsername(user);
         config.setPassword(password);

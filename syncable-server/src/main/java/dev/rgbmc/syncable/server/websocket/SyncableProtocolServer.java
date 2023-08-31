@@ -57,7 +57,7 @@ public class SyncableProtocolServer extends WebSocketServer {
                 .getLogger()
                 .warning(
                         "Error encountered when handling connection: "
-                        + conn.getRemoteSocketAddress().getAddress().getHostAddress());
+                                + conn.getRemoteSocketAddress().getAddress().getHostAddress());
         ex.printStackTrace();
     }
 

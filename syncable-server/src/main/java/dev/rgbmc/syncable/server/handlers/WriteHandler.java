@@ -31,8 +31,8 @@ public class WriteHandler extends CommandHandler {
                                 .getLogger()
                                 .warning(
                                         "Error encountered when saving player data (UUID: "
-                                        + playerId.toString()
-                                        + ")");
+                                                + playerId.toString()
+                                                + ")");
                         throw new RuntimeException(e);
                     }
                 });

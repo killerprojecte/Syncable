@@ -1,0 +1,14 @@
+#CockroachDB 配置
+#CockroachDB configuration
+cockroach:
+  host: localhost:26257
+  database: postgres
+  user: root
+  password: SyncablePowered
+  max-lifetime: 1800000
+  minimum-idle: 8
+  maximum-pool-size: 20
+  ssl: false
+#Syncable-Server 端口
+#Syncable-Server Port
+port: 55541

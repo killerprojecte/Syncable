@@ -1,31 +1,31 @@
 package dev.rgbmc.syncable.utils;
 
 import com.google.common.collect.Lists;
-import dev.rgbmc.syncable.SyncableFabric;
+import dev.rgbmc.syncable.SyncableForge;
 import dev.rgbmc.syncable.objects.AdvancementData;
-import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementProgress;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AdvancementUtils {
-    public static List<AdvancementData> getAdvancements(ServerPlayerEntity player) {
-        MinecraftServer server = SyncableFabric.getServer();
+    public static List<AdvancementData> getAdvancements(ServerPlayer player) {
+        MinecraftServer server = SyncableForge.getServer();
         List<AdvancementData> advancements = new ArrayList<>();
         final Iterator<Advancement> advancementIterator =
-                server.getAdvancementLoader().getAdvancements().iterator();
+                server.getAdvancements().getAllAdvancements().iterator();
         advancementIterator.forEachRemaining(
                 advancement -> {
                     Map<String, Date> awardedCriteria = new HashMap<>();
-                    AdvancementProgress progress = player.getAdvancementTracker().getProgress(advancement);
+                    AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
                     progress
-                            .getObtainedCriteria()
+                            .getCompletedCriteria()
                             .forEach(
                                     key -> {
-                                        awardedCriteria.put(key, progress.getCriterionProgress(key).getObtainedDate());
+                                        awardedCriteria.put(key, progress.getCriterion(key).getObtained());
                                     });
 
                     if (!awardedCriteria.isEmpty()) {
@@ -36,14 +36,14 @@ public class AdvancementUtils {
     }
 
     public static void setAdvancements(
-            ServerPlayerEntity player, List<AdvancementData> advancements) {
-        MinecraftServer server = SyncableFabric.getServer();
+            ServerPlayer player, List<AdvancementData> advancements) {
+        MinecraftServer server = SyncableForge.getServer();
         final int totalExperience = player.totalExperience;
         final int level = player.experienceLevel;
         final float exp = player.experienceProgress;
         AtomicBoolean shouldRecoverExp = new AtomicBoolean(false);
         final Iterator<Advancement> advancementIterator =
-                server.getAdvancementLoader().getAdvancements().iterator();
+                server.getAdvancements().getAllAdvancements().iterator();
         advancementIterator.forEachRemaining(
                 advancement -> {
                     Optional<AdvancementData> optional =
@@ -54,35 +54,35 @@ public class AdvancementUtils {
                     if (optional.isPresent()) {
                         AdvancementData advancementData = optional.get();
                         final AdvancementProgress progress =
-                                player.getAdvancementTracker().getProgress(advancement);
+                                player.getAdvancements().getOrStartProgress(advancement);
                         advancementData.getAwardedCriteria().keySet().stream()
-                                .filter(key -> !Lists.newArrayList(progress.getObtainedCriteria()).contains(key))
+                                .filter(key -> !Lists.newArrayList(progress.getCompletedCriteria()).contains(key))
                                 .forEach(
                                         criteria -> {
-                                            server.executeSync(
+                                            server.executeBlocking(
                                                     () -> {
-                                                        player.getAdvancementTracker().grantCriterion(advancement, criteria);
+                                                        player.getAdvancements().award(advancement, criteria);
                                                     });
                                             shouldRecoverExp.set(true);
                                         });
-                        Lists.newArrayList(progress.getObtainedCriteria()).stream()
+                        Lists.newArrayList(progress.getCompletedCriteria()).stream()
                                 .filter(key -> !advancementData.getAwardedCriteria().containsKey(key))
                                 .forEach(
                                         criteria ->
-                                                player.getAdvancementTracker().revokeCriterion(advancement, criteria));
+                                                player.getAdvancements().revoke(advancement, criteria));
                     } else {
-                        AdvancementProgress progress = player.getAdvancementTracker().getProgress(advancement);
+                        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
                         progress
-                                .getObtainedCriteria()
+                                .getCompletedCriteria()
                                 .forEach(
                                         criteria ->
-                                                player.getAdvancementTracker().revokeCriterion(advancement, criteria));
+                                                player.getAdvancements().revoke(advancement, criteria));
                     }
                 });
         if (shouldRecoverExp.get()) {
             player.totalExperience = totalExperience;
             player.experienceProgress = exp;
-            player.setExperienceLevel(level);
+            player.setExperienceLevels(level);
         }
     }
 }

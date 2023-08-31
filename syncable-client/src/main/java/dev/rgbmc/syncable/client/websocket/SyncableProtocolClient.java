@@ -17,9 +17,9 @@ public class SyncableProtocolClient extends WebSocketClient {
         super(
                 new URI(
                         "ws://"
-                        + host
-                        + "/"
-                        + Base64.getEncoder()
+                                + host
+                                + "/"
+                                + Base64.getEncoder()
                                 .encodeToString(serverId.toString().getBytes(StandardCharsets.UTF_8))));
     }
 

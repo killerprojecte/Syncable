@@ -3,7 +3,7 @@
   "id": "syncable",
   "version": "${version}",
   "name": "SyncableFabric",
-  "description": "",
+  "description": "A Next-Generation Minecraft player data synchronization system based on CockroachDB",
   "authors": [
     "RGBMCPowered",
     "FlyProject"
