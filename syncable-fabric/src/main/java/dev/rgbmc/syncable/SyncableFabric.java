@@ -155,6 +155,18 @@ public class SyncableFabric implements ModInitializer {
         if (synchronizers_section.getBoolean("max-health")) {
             SynchronizerManager.register("max_health", new MaxHealthSynchronizer());
         }
+        if (synchronizers_section.getBoolean("saturation")) {
+            SynchronizerManager.register("saturation", new SaturationSynchronizer());
+        }
+        if (synchronizers_section.getBoolean("held-slot")) {
+            SynchronizerManager.register("select_slot", new SelectedSlotSynchronizer());
+        }
+        if (synchronizers_section.getBoolean("game-mode")) {
+            SynchronizerManager.register("game_mode", new GameModeSynchronizer());
+        }
+        if (synchronizers_section.getBoolean("flying")) {
+            SynchronizerManager.register("is_flying", new FlySynchronizer());
+        }
         getServer()
                 .execute(
                         () -> {

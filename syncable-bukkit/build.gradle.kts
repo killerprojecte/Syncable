@@ -46,7 +46,7 @@ tasks.compileJava {
 
 tasks.processResources {
     val placeholders = mapOf(
-            "version" to version
+        "version" to version
     )
 
     filesMatching("plugin.yml") {

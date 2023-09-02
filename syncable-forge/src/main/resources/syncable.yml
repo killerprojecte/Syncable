@@ -13,4 +13,9 @@ synchronizers:
   effect: true
   food: true
   health: true
+  saturation: true
+  held-slot: true
+  game-mode: false
+  flying: false
   max-health: false
+  persistent-data-container: false
