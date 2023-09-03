@@ -7,8 +7,12 @@ import dev.rgbmc.syncable.client.synchronizers.SynchronizerManager;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class ReadHandler extends CommandHandler {
+    private CompletableFuture<Boolean> callWhenFinishLoading;
+    private boolean shouldCall = false;
+
     public ReadHandler(UUID playerId) {
         super(playerId);
     }
@@ -33,11 +37,19 @@ public class ReadHandler extends CommandHandler {
         return jsonObject;
     }
 
+    public void callItWhenFinishLoading(CompletableFuture<Boolean> future) {
+        this.callWhenFinishLoading = future;
+        this.shouldCall = true;
+    }
+
     @Override
     public void handle(JsonObject jsonObject) {
+        boolean isNew;
         if (jsonObject.get("data").getAsString().equalsIgnoreCase("not_registered")) {
+            isNew = true;
             NewProfileHandler.create(getPlayerId());
         } else {
+            isNew = false;
             SynchronizerManager.deserialize(
                     getPlayerId(),
                     JsonParser.parseString(
@@ -50,6 +62,9 @@ public class ReadHandler extends CommandHandler {
                                                                     .getBytes(StandardCharsets.UTF_8)),
                                             StandardCharsets.UTF_8))
                             .getAsJsonObject());
+        }
+        if (shouldCall) {
+            callWhenFinishLoading.complete(isNew);
         }
     }
 }

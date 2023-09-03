@@ -33,3 +33,6 @@ synchronizers:
   flying: false
   max-health: false
   persistent-data-container: false
+#在数据同步完成前冻结玩家数据
+#Freeze player data until data sync completes
+freeze-player: false

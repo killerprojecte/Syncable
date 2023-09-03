@@ -4,6 +4,7 @@ import dev.rgbmc.syncable.client.SyncableClient;
 import dev.rgbmc.syncable.client.schedulers.SyncableScheduler;
 import dev.rgbmc.syncable.client.synchronizers.SynchronizerManager;
 import dev.rgbmc.syncable.commands.SyncableCommand;
+import dev.rgbmc.syncable.listeners.FreezeListener;
 import dev.rgbmc.syncable.listeners.PlayerListener;
 import dev.rgbmc.syncable.schedulers.BukkitScheduler;
 import dev.rgbmc.syncable.schedulers.FoliaScheduler;
@@ -35,6 +36,7 @@ public class SyncableBukkit extends JavaPlugin {
     private static SyncableScheduler scheduler;
     private static Timer timer;
     private static MessageUtils messageUtils;
+    private boolean freezeMode = false;
 
     public static SyncableClient getSyncableClient() {
         return syncableClient;
@@ -173,6 +175,12 @@ public class SyncableBukkit extends JavaPlugin {
             SynchronizerManager.register("is_flying", new FlySynchronizer());
         }
 
+        if (getConfig().getBoolean("freeze-player")) {
+            freezeMode = true;
+            Bukkit.getPluginManager().registerEvents(new FreezeListener(), this);
+            getLogger().info("Freeze-Mode Enabled!");
+        }
+
         CompletableFuture.runAsync(
                 () -> {
                     // Waiting when running on server mode
@@ -189,6 +197,10 @@ public class SyncableBukkit extends JavaPlugin {
                                     ServerIDUtils.read(), getConfig().getString("syncable-server.host"));
                     timer.schedule(new AutoSaveTimer(), 0L, 1000L);
                 });
+    }
+
+    public boolean isFreezeMode() {
+        return freezeMode;
     }
 
     @Override

@@ -1,0 +1,5 @@
+name: SyncableBungee
+main: dev.rgbmc.syncable.SyncableBungee
+version: 1.0.0
+author: RGBMCPowered
+description: A Next-Generation Minecraft player data synchronization system based on CockroachDB

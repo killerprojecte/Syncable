@@ -16,11 +16,22 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.concurrent.CompletableFuture;
+
 public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        SyncableBukkit.getSyncableClient().sendCommand(new ReadHandler(player.getUniqueId()));
+        ReadHandler readHandler = new ReadHandler(player.getUniqueId());
+        if (SyncableBukkit.instance.isFreezeMode()) {
+            FreezeListener.freeze(player.getUniqueId());
+            CompletableFuture<Boolean> future = new CompletableFuture<>();
+            future.thenAcceptAsync(isNew -> {
+                FreezeListener.unfreeze(player.getUniqueId());
+            });
+            readHandler.callItWhenFinishLoading(future);
+        }
+        SyncableBukkit.getSyncableClient().sendCommand(readHandler);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -28,6 +39,9 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         if (SyncableBukkit.instance.isEnabled()) {
             SyncUtils.write(player);
+        }
+        if (FreezeListener.isFreezing(player.getUniqueId())) {
+            FreezeListener.unfreeze(player.getUniqueId());
         }
     }
 
