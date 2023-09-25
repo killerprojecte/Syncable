@@ -12,9 +12,10 @@ repositories {
 
 dependencies {
     implementation(project(":syncable-server"))
-    implementation("org.fastmcmirror:yaml:1.3.0")
-    implementation("org.yaml:snakeyaml:1.33")
+    //implementation("org.fastmcmirror:yaml:1.3.0")
+    //implementation("org.yaml:snakeyaml:1.33")
     compileOnly("com.velocitypowered:velocity-api:3.2.0-SNAPSHOT")
+    //compileOnly("org.spongepowered:configurate-yaml:3.7.3")
     annotationProcessor("com.velocitypowered:velocity-api:3.2.0-SNAPSHOT")
 }
 

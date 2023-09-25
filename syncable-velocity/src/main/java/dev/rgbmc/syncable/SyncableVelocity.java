@@ -7,9 +7,8 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.rgbmc.syncable.server.SyncableServer;
-import org.fastmcmirror.yaml.configuration.ConfigurationSection;
-import org.fastmcmirror.yaml.file.FileConfiguration;
-import org.fastmcmirror.yaml.file.YamlConfiguration;
+import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -27,7 +26,7 @@ import java.sql.SQLException;
 public class SyncableVelocity {
 
     private static SyncableServer syncableServer;
-    private static FileConfiguration configuration;
+    private static ConfigurationNode configuration;
     private final ProxyServer server;
     private final Logger logger;
     private final File dataDirectory;
@@ -88,20 +87,24 @@ public class SyncableVelocity {
                 .info(
                         "If you do not agree with the content of the agreement, please uninstall the plugin, if you continue to use it, you will be deemed to agree to the regulation");
         getLogger().info("如果您不同意协议中的内容请卸载插件, 如继续使用将视为同意调控");
-        configuration = YamlConfiguration.loadConfiguration(new File(getDataDirectory(), "config.yml"));
+        try {
+            configuration = YAMLConfigurationLoader.builder().setFile(new File(getDataDirectory(), "config.yml")).build().load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         syncableServer = new SyncableServer();
-        syncableServer.setPort(configuration.getInt("port"));
-        ConfigurationSection section = configuration.getConfigurationSection("cockroach");
+        syncableServer.setPort(configuration.getNode("port").getInt());
+        ConfigurationNode section = configuration.getNode("cockroach");
         try {
             syncableServer.start(
-                    section.getString("host"),
-                    section.getString("database"),
-                    section.getString("user"),
-                    section.getString("password"),
-                    section.getBoolean("ssl"),
-                    section.getInt("minimum-idle"),
-                    section.getInt("maximum-pool-size"),
-                    section.getInt("max-lifetime"));
+                    section.getNode("host").getString(),
+                    section.getNode("database").getString(),
+                    section.getNode("use").getString(),
+                    section.getNode("password").getString(),
+                    section.getNode("ssl").getBoolean(),
+                    section.getNode("minimum-idle").getInt(),
+                    section.getNode("maximum-pool-size").getInt(),
+                    section.getNode("max-lifetime").getInt());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

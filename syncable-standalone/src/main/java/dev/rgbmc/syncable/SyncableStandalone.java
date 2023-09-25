@@ -1,6 +1,8 @@
 package dev.rgbmc.syncable;
 
 import dev.rgbmc.syncable.server.SyncableServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fastmcmirror.yaml.configuration.ConfigurationSection;
 import org.fastmcmirror.yaml.file.FileConfiguration;
 import org.fastmcmirror.yaml.file.YamlConfiguration;
@@ -12,10 +14,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class SyncableStandalone {
-    private final static Logger logger = Logger.getLogger("Syncable-Standalone");
+    private final static Logger logger = LogManager.getRootLogger();
     private static SyncableServer syncableServer;
     private static FileConfiguration configuration;
 
@@ -64,7 +65,7 @@ public class SyncableStandalone {
     private static void saveFile(String name, boolean replace, String saveName) {
         URL url = SyncableStandalone.class.getClassLoader().getResource(name);
         if (url == null) {
-            getLogger().severe(name + " Not Found in JarFile");
+            getLogger().error(name + " Not Found in JarFile");
             return;
         }
         File file =
@@ -79,13 +80,13 @@ public class SyncableStandalone {
         try {
             connection = url.openConnection();
         } catch (IOException e) {
-            getLogger().severe("Failed unpack file " + name + ":" + e.getMessage());
+            getLogger().error("Failed unpack file " + name + ":" + e.getMessage());
         }
         connection.setUseCaches(false);
         try {
             saveFile(connection.getInputStream(), file);
         } catch (IOException e) {
-            getLogger().severe("Failed unpack file " + name + ":" + e.getMessage());
+            getLogger().error("Failed unpack file " + name + ":" + e.getMessage());
         }
     }
 
