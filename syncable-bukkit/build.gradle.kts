@@ -24,7 +24,7 @@ dependencies {
     compileOnly("net.md-5:bungeecord-chat:1.16-R0.4-deprecated+build.9")
     compileOnly("net.kyori:adventure-api:4.14.0")
     compileOnly("net.william278:husksync:2.2.8")
-    implementation("de.tr7zw:item-nbt-api:2.11.3")
+    implementation("de.tr7zw:item-nbt-api:2.12.0")
     implementation(project(":syncable-server"))
     implementation(project(":syncable-client"))
 }
